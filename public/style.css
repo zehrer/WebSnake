@@ -1,0 +1,115 @@
+/*
+ * Style definitions for the single‑player Snake game.
+ *
+ * The game uses a full‑page gradient background, a centred start screen
+ * and a floating scoreboard when playing. The canvas scales to fill
+ * the available space while maintaining the aspect ratio.
+ */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+body {
+  /* Soft gradient background */
+  background: linear-gradient(135deg, #c9fdd7, #a3d8f4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Start screen styles */
+.start-screen {
+  text-align: center;
+}
+
+.start-screen h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.start-screen input {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #bbb;
+  margin-right: 8px;
+}
+
+.start-screen button {
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+}
+
+.start-screen button:hover {
+  background-color: #45a049;
+}
+
+.start-screen .hint {
+  margin-top: 16px;
+  max-width: 360px;
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Game container styles */
+#game-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#game-canvas {
+  /* Take all available space while preserving aspect ratio */
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: #f0fdf6;
+}
+
+/* Scoreboard styling */
+.scoreboard {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  min-width: 120px;
+  font-size: 0.9rem;
+}
+
+.scoreboard h2 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.scoreboard .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.scoreboard .color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  margin-right: 4px;
+}
