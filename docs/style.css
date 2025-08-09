@@ -113,3 +113,11 @@ body {
   border-radius: 2px;
   margin-right: 4px;
 }
+
+/* Touch: no scroll or zoom gesture on the field */
+#game-container,
+#game-canvas {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
