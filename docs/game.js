@@ -39,6 +39,8 @@ let score = 0;
 let intervalId = null;
 let audioCtx;
 
+let touchStart = null; // {x, y, t}
+
 /**
  * Hilfsfunktion: Erstellt eine zufällige Position auf dem Spielfeld,
  * die aktuell nicht von der Schlange besetzt ist.
@@ -114,6 +116,55 @@ function handleKeyDown(e) {
       pendingDirection = newDir;
     }
   }
+}
+
+/**
+ * Startpunkt einer Touch-Geste merken.
+ */
+function handleTouchStart(e) {
+  if (e.touches.length !== 1) return;
+  const t = e.touches[0];
+  touchStart = { x: t.clientX, y: t.clientY, t: performance.now() };
+  // Damit die Seite beim Wischen nicht scrollt
+  e.preventDefault();
+}
+
+/**
+ * Auswerten, ob der Touch eine Wischgeste (Swipe) war und Richtung setzen.
+ */
+function handleTouchEnd(e) {
+  if (!touchStart) return;
+  const tEnd = e.changedTouches && e.changedTouches[0];
+  if (!tEnd) return;
+
+  const dx = tEnd.clientX - touchStart.x;
+  const dy = tEnd.clientY - touchStart.y;
+  const dt = performance.now() - touchStart.t;
+
+  // Mindestlänge & schnelle Geste – passt gern an
+  const THRESHOLD_PX = 24;
+  const MAX_TAP_TIME_MS = 400;
+
+  // Kurzer Tap -> ignorieren (kein Richtungswechsel)
+  if (Math.max(Math.abs(dx), Math.abs(dy)) < THRESHOLD_PX || dt > 1000) {
+    touchStart = null;
+    return;
+  }
+
+  let newDir;
+  if (Math.abs(dx) > Math.abs(dy)) {
+    newDir = dx > 0 ? [1, 0] : [-1, 0];     // rechts / links
+  } else {
+    newDir = dy > 0 ? [0, 1] : [0, -1];     // runter / hoch
+  }
+
+  // 180°-Umkehr verhindern
+  if (newDir[0] !== -direction[0] || newDir[1] !== -direction[1]) {
+    pendingDirection = newDir;
+  }
+
+  touchStart = null;
+  e.preventDefault();
 }
 
 /**
@@ -245,3 +296,7 @@ startBtn.addEventListener('click', () => {
 });
 
 window.addEventListener('keydown', handleKeyDown);
+
+// Touch (for iPhone/Android)
+gameContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
+gameContainer.addEventListener('touchend', handleTouchEnd, { passive: false });
